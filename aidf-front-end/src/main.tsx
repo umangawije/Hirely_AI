@@ -8,7 +8,7 @@ import HomePage from './pages/home/home.page'
 import SignInPage from './pages/sign-in.page'
 import SignUpPage from './pages/sign-up.page'
 import MainLayout from './layout/main.layout'
-import path from 'path'
+import JobPage from './pages/job/job.page'
 
 const router = createBrowserRouter([
   {
@@ -18,11 +18,20 @@ const router = createBrowserRouter([
       path:"/",
       element: <MainLayout/>,
       children:[
-      {
-        path:"home",
-        element:<HomePage/>
-      }
-    ]
+        {
+          path:"home",
+          element:<HomePage/>
+        },
+        {
+          path:"job",
+          children:[
+            {
+              path:":id",
+              element:<JobPage/>
+            },
+          ],
+        },
+      ],
     },
     {
       path:"/sign-in",

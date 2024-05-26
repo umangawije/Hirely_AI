@@ -22,7 +22,8 @@ function JobCard(props: JobCardProps) {
 
     
     return ( 
-        <Link to={`/job/${props._id}`} className="block">
+        <Link to={props.isAdmin ? `/admin/job/${props._id}` : `/job/${props._id}`} 
+        className="block">
             <Card>
                 <CardHeader>
                     <CardTitle>{props.title}</CardTitle>
