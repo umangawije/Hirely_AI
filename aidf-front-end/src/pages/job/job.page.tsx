@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input"
 import { useParams } from "react-router-dom";
 import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
+import { ChangeEvent, FormEvent, useState } from "react";
 
 function JobPage() {
 
@@ -20,6 +21,25 @@ function JobPage() {
     };
 
     const {id} = useParams();
+
+    const [formData, setFormData] = useState({
+        fullName:"",
+        a1: "",
+        a2: "",
+        a3: "",
+    });
+
+    const handleChange = (
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) =>{
+        setFormData({...formData, [event.target.name]:event.target.value});
+
+    };
+
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) =>{
+        event.preventDefault();
+        console.log(formData)
+    }
 
     return (
         <div>
@@ -40,14 +60,14 @@ function JobPage() {
                 <p>{job?.description}</p>
             </div>
             <Separator/>
-            <form className="py-8">
+            <form className="py-8" onSubmit={handleSubmit}>
                 <div>
                     <h3>Full Name</h3>
                     <Input
                         className = "mt-2"
                         name = "fullName"
-                        //value = {formData.fullName}
-                        //onChange = {handleChange}
+                        value = {formData.fullName}
+                        onChange = {handleChange}
                         required
                     />
                 </div>
@@ -63,8 +83,8 @@ function JobPage() {
                                     formData[
                                         `a${i+1}` as keyof omit<typeof formData, "fullName">
                                     ]
-                                }
-                                onChange={handleChange}*/
+                                }*/
+                                onChange={handleChange}
                                 required
                             />
                         </div>
