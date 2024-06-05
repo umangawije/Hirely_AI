@@ -4,21 +4,12 @@ import { Input } from "@/components/ui/input"
 import { useParams } from "react-router-dom";
 import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { Job } from "@/types/job";
 
 function JobPage() {
-
-    const job = {
-        title: "Intern-Software Engineer",
-        type: "Full-Time",
-        location: "Remote",
-        description:"we are seeking a motivated and enthus ",
-        questions: [
-            "share your academic details ?",
-            "Describe your professional development?",
-            "Discuss notable projects in your programmin experience. what challenges face"
-        ],
-    };
+    const [job, setJob] = useState<Job | null>(null);
+    const [isLoading, setIsLoading ] = useState(true);
 
     const {id} = useParams();
 
@@ -29,6 +20,22 @@ function JobPage() {
         a3: "",
     });
 
+    useEffect(()=>{
+        const fetchJob = async() => {
+            const res = await fetch(`http://localhost:8000/jobs/${id}`,{
+                method: "GET",
+            });
+            const data:Job = await res.json();
+            return data;
+        }
+
+        fetchJob().then((data) => {
+            setJob(data);
+            setIsLoading(false);
+        });
+    }, [id]);
+
+
     const handleChange = (
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) =>{
@@ -36,9 +43,31 @@ function JobPage() {
 
     };
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) =>{
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) =>{
         event.preventDefault();
         console.log(formData)
+
+        const res = await fetch("http://localhost:8000/jobApplications",{
+            method: "POST",
+            headers:{
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                userId: "umanga",
+                fullName: formData.fullName,
+                job: id,
+                answers: [formData.a1,formData.a2,formData.a3],
+            })
+        });
+        console.log(res);
+    };
+
+    if (isLoading || job === null){
+        return(
+            <div>
+                <h2>Loading....</h2>
+            </div>
+        );
     }
 
     return (

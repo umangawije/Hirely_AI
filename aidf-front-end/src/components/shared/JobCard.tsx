@@ -11,10 +11,10 @@ import { Briefcase, MapPin } from "lucide-react";
 
 
 type JobCardProps = {
-    _id: String;
-    title: String;
-    type: String;
-    location: String;
+    _id: string;
+    title: string;
+    type: string;
+    location: string;
     isAdmin: boolean;
 };
   

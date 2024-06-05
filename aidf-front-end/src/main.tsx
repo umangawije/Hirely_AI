@@ -9,6 +9,9 @@ import SignInPage from './pages/sign-in.page'
 import SignUpPage from './pages/sign-up.page'
 import MainLayout from './layout/main.layout'
 import JobPage from './pages/job/job.page'
+import { ClerkProvider } from '@clerk/clerk-react';
+
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
 const router = createBrowserRouter([
   {
@@ -48,6 +51,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+     <RouterProvider router={router}/>
+    </ClerkProvider>
   </React.StrictMode>,
 )
