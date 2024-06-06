@@ -5,13 +5,18 @@ import { BrowserRouter, RouterProvider, createBrowserRouter } from 'react-router
 
 import RootLayout from './layout/root.layout'
 import HomePage from './pages/home/home.page'
-import SignInPage from './pages/sign-in.page'
-import SignUpPage from './pages/sign-up.page'
+import SignInPage from './pages/sign-in/sign-in.page'
+import SignUpPage from './pages/sign-up/sign-up.page'
 import MainLayout from './layout/main.layout'
 import JobPage from './pages/job/job.page'
 import { ClerkProvider } from '@clerk/clerk-react';
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+
+
+if (!PUBLISHABLE_KEY) {
+  throw new Error("Missing Publishable Key")
+}
 
 const router = createBrowserRouter([
   {
