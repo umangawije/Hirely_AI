@@ -6,12 +6,17 @@ import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Job } from "@/types/job";
+import { useUser } from "@clerk/clerk-react";
 
 function JobPage() {
     const [job, setJob] = useState<Job | null>(null);
     const [isLoading, setIsLoading ] = useState(true);
 
+    const user = useUser();
+    console.log(user);
+
     const {id} = useParams();
+    console.log(id);
 
     const [formData, setFormData] = useState({
         fullName:"",
@@ -53,7 +58,7 @@ function JobPage() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                userId: "umanga",
+                userId: user.user?.id,
                 fullName: formData.fullName,
                 job: id,
                 answers: [formData.a1,formData.a2,formData.a3],

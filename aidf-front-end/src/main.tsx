@@ -10,6 +10,12 @@ import SignUpPage from './pages/sign-up/sign-up.page'
 import MainLayout from './layout/main.layout'
 import JobPage from './pages/job/job.page'
 import { ClerkProvider } from '@clerk/clerk-react';
+import AdminMainLayout from './layout/admin.layout'
+import AdminJobPostPage from './pages/admin/jobPosts/admin-job-posts.page'
+import JobCreatePage from './pages/admin/createJob/job-create-page'
+import AdminJobPage from './pages/admin/job/admin-job.page'
+import AdminJobApplicationPage from './pages/admin/jobApplication/admin-job-application.page'
+
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -31,15 +37,32 @@ const router = createBrowserRouter([
           element:<HomePage/>
         },
         {
-          path:"job",
-          children:[
-            {
-              path:":id",
-              element:<JobPage/>
-            },
-          ],
+          path:"job/:id",
+          element: <JobPage/>,
         },
       ],
+    },
+    {
+      path:"admin",
+      element:<AdminMainLayout/>,
+      children:[
+        {
+          path:"jobs",
+          element:<AdminJobPostPage/>
+        },
+        {
+          path:"job/create",
+          element:<JobCreatePage/>,
+        },
+        {
+          path:"job/:id",
+          element:<AdminJobPage/>,
+        },
+        {
+          path:"job/:id/application/:applicationId",
+          element:<AdminJobApplicationPage/>
+        }
+      ]
     },
     {
       path:"/sign-in",
