@@ -4,7 +4,7 @@ import {Job} from "@/types/job";
 
 function JobSection() {
 
-    const [jobs, setJobs] = useState<Job[]>([]);
+    const [jobs, setJobs,] = useState<Job[]>([]);
 
     useEffect(()=>{
         const fetchJobs = async() => {

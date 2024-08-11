@@ -11,7 +11,7 @@ function Navigation() {
                 </Link>
             </div>
             <div className="flex justify-center gap-x-8 items-center">
-                <Link to={"/"}>Home</Link>
+                <Link to={"/home"}>Home</Link>
 
 
                 <div className="flex gap-x-4 items-center">

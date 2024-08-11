@@ -1,30 +1,54 @@
 import { Separator } from "@/components/ui/separator";
 import { Briefcase, MapPin } from "lucide-react";
 import JobApplicationCard from "./componenet/JobApplicationCard";
+import { useEffect, useState } from "react";
+import { JobDetails } from "@/types/job";
+import { JobApplication } from "@/types/jobApplication";
+import { useParams } from "react-router-dom";
+import { getJobById } from "@/lib/services/api/jobs";
+import { getJobApllicationsForJob } from "@/lib/services/api/jobApplications";
 
 
 function JobPage() {
-  const job = {
-    _id: "xyz",
-    title: "Intern - Software Engineer",
-    description:
-      "We are seeking a motivated and enthusiastic Software Engineering Intern to join our dynamic team. As a Software Engineering Intern, you will have the opportunity to work closely with experienced developers and contribute to real-world projects. This internship is designed to provide valuable hands-on experience, foster professional growth, and enhance your technical skills.",
-    type: "Full-time",
-    location: "Remote",
-    questions: [
-      "Share your academic background and highlight key programming concepts you've mastered. How has your education shaped your current tech skill set ?",
-      "Describe your professional development, emphasizing any certifications obtained. How have these certifications enriched your technical abilities, and can you provide an example of their practical application ?",
-      "Discuss notable projects in your programming experience. What challenges did you face, and how did you apply your skills to overcome them? Highlight the technologies used and the impact of these projects on your overall growth as a prefessional ?",
-    ],
-  };
+  const [job, setJob] = useState<JobDetails | null>(null);
+  const [isJobLoading, setIsJobLoading] = useState(true);
+  const [jobApplications, setJobApplications] = useState<Array<JobApplication>>(
+    []
+  );
+  const [isJobApplicationsLoading, setIsjobApplicationsLoading] = 
+    useState(true);
+  const {id} = useParams();
 
-  const jobApplications = [
-    {
-      _id: "1",
-      fullName: "Manupa Samarawickrama",
-      jobId: "xyz",
-    },
-  ];
+  useEffect(() => {
+    if(!id){
+      return;
+    }
+
+    getJobById(id)
+    .then((data) => {
+      setJob(data as JobDetails);
+      setIsJobLoading(false);
+    })
+    .catch((err) => {
+      console.log(err);
+      setIsJobLoading(false);
+    });
+
+    getJobApllicationsForJob(id)
+    .then((data) => {
+      setJobApplications(data);
+      setIsjobApplicationsLoading(false);
+    })
+    .catch((err) => {
+      console.log(err);
+      setIsjobApplicationsLoading(false);
+    });
+  },[id]);
+
+  if(isJobLoading || isJobApplicationsLoading){
+    return null;
+  }
+  
 
   return (
     <div>
@@ -58,7 +82,7 @@ function JobPage() {
               key={application._id}
               fullName={application.fullName}
               _id={application._id}
-              jobId={application.jobId}
+              jobId={id!}
             />
           ))}
         </div>
